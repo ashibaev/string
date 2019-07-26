@@ -5,18 +5,15 @@
 #include <cctype>
 
 
-String::String(const char* string)
-{
+String::String(const char* string) {
 	Initialize(string, strlen(string));
 }
 
-String::String(const String& other)
-{
+String::String(const String& other) {
 	Initialize(other.Data_, other.Size_);
 }
 
-String::String(String && other)
-{
+String::String(String&& other) {
 	Swap(other);
 }
 
@@ -50,7 +47,7 @@ String::const_iterator String::cend() const noexcept
 	return Data_ ? (Data_ + Size_) : nullptr;
 }
 
-String & String::operator=(const String & other)
+String& String::operator=(const String& other)
 {
 	if (this == &other)
 		return *this;
@@ -58,13 +55,13 @@ String & String::operator=(const String & other)
 	return *this;
 }
 
-String & String::operator=(const char * other)
+String& String::operator=(const char* other)
 {
 	Initialize(other, strlen(other));
 	return *this;
 }
 
-String & String::operator=(String && other)
+String& String::operator=(String&& other)
 {
 	if (this == &other)
 		return *this;
@@ -94,12 +91,12 @@ size_t String::Capacity() const noexcept
 	return Capacity_;
 }
 
-const char * String::Data() const noexcept
+const char* String::Data() const noexcept
 {
 	return Data_;
 }
 
-char * String::MutableData() noexcept
+char* String::MutableData() noexcept
 {
 	return Data_;
 }
@@ -109,7 +106,7 @@ String::~String()
 	delete[] Data_;
 }
 
-void String::Initialize(const char * string, size_t size)
+void String::Initialize(const char* string, size_t size)
 {
 	Reserve(GetNextCapacity(size));
 	Size_ = size;
@@ -133,7 +130,7 @@ void String::Swap(String & other) noexcept {
 	std::swap(Data_, other.Data_);
 }
 
-void String::Append(const char * string, size_t size)
+void String::Append(const char* string, size_t size)
 {
 	size_t new_size = Size_ + size;
 	bool is_same_string = (string == Data_);
@@ -168,7 +165,7 @@ void String::Clear() noexcept
 }
 
 
-char & String::operator[](size_t index)
+char& String::operator[](size_t index)
 {
 	return Data_[index];
 }
@@ -178,7 +175,7 @@ char String::operator[](size_t index) const
 	return Data_[index];
 }
 
-char & String::At(size_t index)
+char& String::At(size_t index)
 {
 	if (index >= Size_)
 		throw std::out_of_range("Index out of range");
@@ -192,31 +189,31 @@ char String::At(size_t index) const
 	return Data_[index];
 }
 
-String & String::operator+=(const String & other)
+String& String::operator+=(const String& other)
 {
 	Append(other.Data_, other.Size_);
 	return *this;
 }
 
-String & String::operator+=(const char * other)
+String& String::operator+=(const char* other)
 {
 	Append(other, strlen(other));
 	return *this;
 }
 
-String & String::operator+=(char symbol)
+String& String::operator+=(char symbol)
 {
 	char str[2] = { symbol, 0 };
 	Append(str, 1);
 	return *this;
 }
 
-String operator+(const String& lhs, const String & rhs)
+String operator+(const String& lhs, const String& rhs)
 {
 	return String(lhs) += rhs;
 }
 
-String operator+(String && lhs, const String & rhs)
+String operator+(String&& lhs, const String& rhs)
 {
 	return String(std::move(lhs)) += rhs;
 }
